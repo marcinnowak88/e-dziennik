@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to E-Dziennik</title>
+    <style>
+        /* Prosty styl dla kafelka logowania */
+        .login-tile {
+            display: inline-block;
+            padding: 20px;
+            margin: 20px;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            font-size: 20px;
+            border-radius: 10px;
+            text-decoration: none;
+        }
+        .login-tile:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to E-Dziennik</h1>
+    <p>This is the homepage.</p>
+
+    <!-- Kafelek logowania -->
+    <a href="{{ url_for('main.login') }}" class="login-tile">Logowanie</a>
+
+</body>
+</html>
