@@ -16,6 +16,7 @@ class User(UserMixin, db.Model):
     last_name = db.Column(db.String(150), nullable=True)  # Tylko dla studentów
     password = db.Column(db.String(150), nullable=False)
     role = db.Column(db.String(50), nullable=False)  # 'admin', 'teacher', 'student'
+    grade = db.Column(db.Float, nullable=True)  # Nowa kolumna na ocenę
 
     # Relacja z grupami (dla studentów)
     groups = db.relationship('Group', secondary='group_student', back_populates='students')

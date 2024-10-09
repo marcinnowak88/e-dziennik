@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.security import check_password_hash
 from .models import User, Subject, Group  # Dodano Group
@@ -115,18 +115,27 @@ def dashboard():
         return redirect(url_for('main.logout'))
 
 # Trasa wyświetlająca listę studentów przypisanych do grupy
-@bp.route('/group/<int:group_id>/students')
+@bp.route('/group/<int:group_id>/students', methods=['GET', 'POST'])
 @login_required
 def group_students(group_id):
-    # Znajdź grupę w bazie danych na podstawie jej ID
+    # Znajdź grupę
     group = Group.query.get_or_404(group_id)
 
-    # Sprawdź, czy użytkownik jest nauczycielem
-    if current_user.role != 'teacher':
-        flash('Nie masz uprawnień dostępu do tej strony.', 'danger')
-        return redirect(url_for('main.index'))
-
-    # Pobierz listę studentów przypisanych do grupy
+    # Znajdź wszystkich studentów przypisanych do tej grupy
     students = group.students
 
+    if request.method == 'POST':
+        # Przechodzimy przez listę studentów i zapisujemy ich oceny
+        for student in students:
+            grade = request.form.get(f'grade_{student.id}')
+            if grade:
+                student.grade = float(grade)  # Zapisz ocenę
+                db.session.add(student)
+
+        # Zatwierdzamy zmiany
+        db.session.commit()
+        flash('Oceny zostały zapisane!', 'success')
+        return redirect(url_for('main.group_students', group_id=group.id))
+
+    # Renderowanie strony z tabelą studentów i ocenami
     return render_template('group_students.html', group=group, students=students)
