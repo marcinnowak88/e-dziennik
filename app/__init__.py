@@ -1,9 +1,11 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_migrate import Migrate
 
 # Utwórz instancję SQLAlchemy i LoginManager
 db = SQLAlchemy()
+migrate = Migrate()
 login_manager = LoginManager()
 
 
@@ -17,6 +19,7 @@ def create_app():
 
     # Inicjalizacja SQLAlchemy i LoginManager
     db.init_app(app)
+    migrate.init_app(app, db)  # Inicjalizacja Flask-Migrate
     login_manager.init_app(app)
     login_manager.login_view = 'main.login'  # Dodaj tę linię
 

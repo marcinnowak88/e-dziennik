@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard Nauczyciela</title>
-    <!-- Dodaj linki do CSS Bootstrap -->
+    <!-- Link do CSS Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
@@ -23,7 +23,34 @@
     <div class="container mt-5">
         <h1>Witaj, {{ user.username }}!</h1>
         <p>To jest panel nauczyciela.</p>
-        <!-- Dodaj tutaj treści specyficzne dla nauczyciela -->
+
+        <!-- Kafelki z przedmiotami -->
+        <div class="row">
+            {% for subject in subjects %}
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ subject.name }}</h5>
+
+                            <!-- Lista grup przypisanych do przedmiotu -->
+                            <div class="mt-3">
+                                <h6>Grupy:</h6>
+                                <ul>
+                                    {% for group in subject.groups %}
+                                        <li>
+                                            <!-- Link do widoku listy studentów otwierany w nowym oknie -->
+                                            <a href="{{ url_for('main.group_students', group_id=group.id) }}" target="_blank">
+                                                {{ group.name }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 
     <!-- Linki do JavaScript Bootstrap i jQuery -->

@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
 from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.security import check_password_hash
-from .models import User, Subject  # Dodaj Subject, jeśli potrzebny w admin_dashboard
+from .models import User, Subject, Group  # Dodano Group
 from .forms import LoginForm
 from . import db
 
@@ -80,9 +80,13 @@ def teacher_dashboard():
     if current_user.role != 'teacher':
         flash('Nie masz uprawnień dostępu do tej strony.', 'danger')
         return redirect(url_for('main.login'))
-    # Pobierz dane potrzebne do wyświetlenia na stronie nauczyciela
-    # np. listę przedmiotów, grup, etc.
-    return render_template('teacher_dashboard.html', user=current_user)
+
+    # Pobierz wszystkie przedmioty z bazy danych
+    subjects = Subject.query.all()
+
+    # Przekaż przedmioty do szablonu
+    return render_template('teacher_dashboard.html', user=current_user, subjects=subjects)
+
 
 # Dashboard dla studenta
 @bp.route('/student_dashboard')
@@ -109,3 +113,20 @@ def dashboard():
     else:
         flash('Nieznana rola użytkownika.', 'danger')
         return redirect(url_for('main.logout'))
+
+# Trasa wyświetlająca listę studentów przypisanych do grupy
+@bp.route('/group/<int:group_id>/students')
+@login_required
+def group_students(group_id):
+    # Znajdź grupę w bazie danych na podstawie jej ID
+    group = Group.query.get_or_404(group_id)
+
+    # Sprawdź, czy użytkownik jest nauczycielem
+    if current_user.role != 'teacher':
+        flash('Nie masz uprawnień dostępu do tej strony.', 'danger')
+        return redirect(url_for('main.index'))
+
+    # Pobierz listę studentów przypisanych do grupy
+    students = group.students
+
+    return render_template('group_students.html', group=group, students=students)
