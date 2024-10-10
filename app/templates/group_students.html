@@ -46,12 +46,12 @@
         }
 
         /* Styl dla formularza wyboru oceny */
-        select.form-control {
+        select.form-control, input.form-control, textarea.form-control {
             background-color: #f1f1f1;
             border: 1px solid #1e3d59;
             color: #1e3d59;
         }
-        select.form-control:focus {
+        select.form-control:focus, input.form-control:focus, textarea.form-control:focus {
             box-shadow: none;
             border-color: #1e3d59;
         }
@@ -66,16 +66,45 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th>lp</th>
                         <th>Imię</th>
                         <th>Nazwisko</th>
+                        <th>Kolokwium 1 (0-30 pkt)</th>
+                        <th>Kolokwium 2 (0-30 pkt)</th>
+                        <th>Projekt (0-30 pkt)</th>
+                        <th>Aktywność (0-10 pkt)</th>
+                        <th>Inne</th>
+                        <th>Uwagi</th>
                         <th>Ocena</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for student in students %}
                         <tr>
+                            <td>{{ loop.index }}</td> <!-- Numeracja studentów -->
                             <td>{{ student.first_name }}</td>
                             <td>{{ student.last_name }}</td>
+                            <!-- Pola dla dodatkowych ocen z zakresem 0-100 -->
+                            <td>
+                                <input type="number" name="kolokwium1_{{ student.id }}" class="form-control" min="0" max="100" value="{{ student.kolokwium1 }}">
+                            </td>
+                            <td>
+                                <input type="number" name="kolokwium2_{{ student.id }}" class="form-control" min="0" max="100" value="{{ student.kolokwium2 }}">
+                            </td>
+                            <td>
+                                <input type="number" name="projekt_{{ student.id }}" class="form-control" min="0" max="100" value="{{ student.projekt }}">
+                            </td>
+                            <td>
+                                <input type="number" name="aktywnosc_{{ student.id }}" class="form-control" min="0" max="100" value="{{ student.aktywnosc }}">
+                            </td>
+                            <td>
+                                <input type="number" name="inne_{{ student.id }}" class="form-control" min="0" max="100" value="{{ student.inne }}">
+                            </td>
+                            <!-- Pole tekstowe dla "Uwagi" -->
+                            <td>
+                                <textarea name="uwagi_{{ student.id }}" class="form-control">{{ student.uwagi }}</textarea>
+                            </td>
+                            <!-- Istniejące pole dla oceny końcowej -->
                             <td>
                                 <select name="grade_{{ student.id }}" class="form-control">
                                     <option value="">Wybierz ocenę</option>
@@ -91,7 +120,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <button type="submit" class="btn btn-primary">Zapisz oceny</button>
+            <button type="submit" class="btn btn-primary">Zapisz dane</button>
         </form>
     </div>
 
