@@ -84,36 +84,52 @@
                             <td>{{ loop.index }}</td> <!-- Numeracja studentów -->
                             <td>{{ student.first_name }}</td>
                             <td>{{ student.last_name }}</td>
-                            <!-- Pola dla dodatkowych ocen z zakresem 0-100 -->
+
+                            <!-- Kolokwium 1 -->
                             <td>
-                                <input type="number" name="kolokwium1_{{ student.id }}" class="form-control" min="0" max="100" value="{{ student.kolokwium1 }}">
+                                <input type="number" name="kolokwium1_{{ student.id }}" class="form-control" min="0" max="100"
+                                       value="{{ assessments[student.id].kolokwium1 if assessments.get(student.id) }}">
                             </td>
+
+                            <!-- Kolokwium 2 -->
                             <td>
-                                <input type="number" name="kolokwium2_{{ student.id }}" class="form-control" min="0" max="100" value="{{ student.kolokwium2 }}">
+                                <input type="number" name="kolokwium2_{{ student.id }}" class="form-control" min="0" max="100"
+                                       value="{{ assessments[student.id].kolokwium2 if assessments.get(student.id) }}">
                             </td>
+
+                            <!-- Projekt -->
                             <td>
-                                <input type="number" name="projekt_{{ student.id }}" class="form-control" min="0" max="100" value="{{ student.projekt }}">
+                                <input type="number" name="projekt_{{ student.id }}" class="form-control" min="0" max="100"
+                                       value="{{ assessments[student.id].projekt if assessments.get(student.id) }}">
                             </td>
+
+                            <!-- Aktywność -->
                             <td>
-                                <input type="number" name="aktywnosc_{{ student.id }}" class="form-control" min="0" max="100" value="{{ student.aktywnosc }}">
+                                <input type="number" name="aktywnosc_{{ student.id }}" class="form-control" min="0" max="100"
+                                       value="{{ assessments[student.id].aktywnosc if assessments.get(student.id) }}">
                             </td>
+
+                            <!-- Inne -->
                             <td>
-                                <input type="number" name="inne_{{ student.id }}" class="form-control" min="0" max="100" value="{{ student.inne }}">
+                                <input type="number" name="inne_{{ student.id }}" class="form-control" min="0" max="100"
+                                       value="{{ assessments[student.id].inne if assessments.get(student.id) }}">
                             </td>
-                            <!-- Pole tekstowe dla "Uwagi" -->
+
+                            <!-- Uwagi -->
                             <td>
-                                <textarea name="uwagi_{{ student.id }}" class="form-control">{{ student.uwagi }}</textarea>
+                                <textarea name="uwagi_{{ student.id }}" class="form-control">{{ assessments[student.id].uwagi if assessments.get(student.id) }}</textarea>
                             </td>
-                            <!-- Istniejące pole dla oceny końcowej -->
+
+                            <!-- Ocena -->
                             <td>
                                 <select name="grade_{{ student.id }}" class="form-control">
                                     <option value="">Wybierz ocenę</option>
-                                    <option value="2.0" {% if student.grade == 2.0 %}selected{% endif %}>2.0</option>
-                                    <option value="3.0" {% if student.grade == 3.0 %}selected{% endif %}>3.0</option>
-                                    <option value="3.5" {% if student.grade == 3.5 %}selected{% endif %}>3.5</option>
-                                    <option value="4.0" {% if student.grade == 4.0 %}selected{% endif %}>4.0</option>
-                                    <option value="4.5" {% if student.grade == 4.5 %}selected{% endif %}>4.5</option>
-                                    <option value="5.0" {% if student.grade == 5.0 %}selected{% endif %}>5.0</option>
+                                    <option value="2.0" {% if assessments.get(student.id) and assessments[student.id].grade == 2.0 %}selected{% endif %}>2.0</option>
+                                    <option value="3.0" {% if assessments.get(student.id) and assessments[student.id].grade == 3.0 %}selected{% endif %}>3.0</option>
+                                    <option value="3.5" {% if assessments.get(student.id) and assessments[student.id].grade == 3.5 %}selected{% endif %}>3.5</option>
+                                    <option value="4.0" {% if assessments.get(student.id) and assessments[student.id].grade == 4.0 %}selected{% endif %}>4.0</option>
+                                    <option value="4.5" {% if assessments.get(student.id) and assessments[student.id].grade == 4.5 %}selected{% endif %}>4.5</option>
+                                    <option value="5.0" {% if assessments.get(student.id) and assessments[student.id].grade == 5.0 %}selected{% endif %}>5.0</option>
                                 </select>
                             </td>
                         </tr>

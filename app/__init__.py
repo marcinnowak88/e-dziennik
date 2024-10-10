@@ -3,11 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
 
-# Utwórz instancję SQLAlchemy i LoginManager
+# Utwórz instancję SQLAlchemy, Migrate i LoginManager
 db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
-
 
 def create_app():
     app = Flask(__name__)
@@ -17,13 +16,13 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Dodano tę linię
 
-    # Inicjalizacja SQLAlchemy i LoginManager
+    # Inicjalizacja SQLAlchemy, Flask-Migrate i LoginManager
     db.init_app(app)
     migrate.init_app(app, db)  # Inicjalizacja Flask-Migrate
     login_manager.init_app(app)
     login_manager.login_view = 'main.login'  # Dodaj tę linię
 
-    # Zarejestrowanie blueprintów
+    # Zarejestrowanie blueprintu
     from .routes import bp as routes_bp
     app.register_blueprint(routes_bp)
 
@@ -31,8 +30,6 @@ def create_app():
     from .models import User, Subject, Group
 
     return app
-
-
 
 # Funkcja ładowania użytkownika
 @login_manager.user_loader
