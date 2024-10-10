@@ -2,38 +2,15 @@ from app import db, create_app
 from app.models import User, Group
 from werkzeug.security import generate_password_hash
 
-def add_and_assign_students():
+def add_and_assign_students(group_name, students_data):
     app = create_app()
     with app.app_context():
-        # Znajdź grupę 1 z "Probabilistyka i statystyka"
-        group = Group.query.filter_by(name='Grupa 1').first()
+        # Znajdź grupę po nazwie
+        group = Group.query.filter_by(name=group_name).first()
 
         if not group:
-            print("Grupa 1 nie istnieje w bazie danych.")
+            print(f"{group_name} nie istnieje w bazie danych.")
             return
-
-        # Lista studentów do dodania i przypisania do grupy
-        students_data = [
-            {'first_name': 'Szymon', 'last_name': 'Andrzejczak'},
-            {'first_name': 'Vadym', 'last_name': 'Antoniuk'},
-            {'first_name': 'Pavel', 'last_name': 'Ban'},
-            {'first_name': 'Grzegorz Paweł', 'last_name': 'Barna'},
-            {'first_name': 'Aleksander', 'last_name': 'Baska'},
-            {'first_name': 'Łukasz', 'last_name': 'Bączkiewicz'},
-            {'first_name': 'Franciszek', 'last_name': 'Broniarczyk'},
-            {'first_name': 'Vladyslav', 'last_name': 'Bykovskyi'},
-            {'first_name': 'Wiktor', 'last_name': 'Ciesielski'},
-            {'first_name': 'Sara Michalina', 'last_name': 'Czabajska'},
-            {'first_name': 'Julia Wiktoria', 'last_name': 'Czajkowska'},
-            {'first_name': 'Marta Weronika', 'last_name': 'Czujewicz'},
-            {'first_name': 'Brunon Aleksander', 'last_name': 'Dłużyński'},
-            {'first_name': 'Monika', 'last_name': 'Dubiel'},
-            {'first_name': 'Paweł', 'last_name': 'Dur'},
-            {'first_name': 'Oleh', 'last_name': 'Dyrda'},
-            {'first_name': 'Ihor', 'last_name': 'Semeniuk'},
-            {'first_name': 'Bohdan', 'last_name': 'Shvets'},
-            {'first_name': 'Łukasz', 'last_name': 'Zieliński'}
-        ]
 
         # Dodaj i przypisz studentów do grupy
         for student_data in students_data:
@@ -77,4 +54,27 @@ def add_and_assign_students():
         print("Wszyscy studenci zostali dodani do bazy danych i przypisani do grupy.")
 
 if __name__ == '__main__':
-    add_and_assign_students()
+    # Lista studentów do Grupy 2
+    students_data_group_2 = [
+        {'first_name': 'Marcin', 'last_name': 'Fuks'},
+        {'first_name': 'Krzysztof', 'last_name': 'Gębicki'},
+        {'first_name': 'Jakub', 'last_name': 'Gibowski'},
+        {'first_name': 'Hubert', 'last_name': 'Grabowski'},
+        {'first_name': 'Mateusz Łukasz', 'last_name': 'Hałaziński'},
+        {'first_name': 'Jakub Wojciech', 'last_name': 'Handke'},
+        {'first_name': 'Maksym', 'last_name': 'Havryliak'},
+        {'first_name': 'Joannna', 'last_name': 'Heydrych'},
+        {'first_name': 'Przemysław Dawid', 'last_name': 'Idczak'},
+        {'first_name': 'Ernest', 'last_name': 'Ignyś'},
+        {'first_name': 'Igor', 'last_name': 'Jurkowski'},
+        {'first_name': 'Daryna', 'last_name': 'Karapysh'},
+        {'first_name': 'Violetta', 'last_name': 'Karpchuk'},
+        {'first_name': 'Filip', 'last_name': 'Kasprzak'},
+        {'first_name': 'Bartosz Wojciech', 'last_name': 'Kiciński'},
+        {'first_name': 'Jakub Mikołaj', 'last_name': 'Klimczak'},
+        {'first_name': 'Filip Jan', 'last_name': 'Nowicki'},
+        {'first_name': 'Franciszek', 'last_name': 'Wojciechowski'}
+    ]
+
+    # Wywołujemy funkcję dla Grupy 2
+    add_and_assign_students('Grupa 2', students_data_group_2)
